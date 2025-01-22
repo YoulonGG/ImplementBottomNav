@@ -19,7 +19,7 @@ object AppModule {
     @Singleton
     fun provideInfiniteImageApi(): ApiService {
         return Retrofit.Builder()
-            .baseUrl("https://api.themoviedb.org/3/movie/")
+            .baseUrl("https://api.themoviedb.org/3/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(
                 OkHttpClient.Builder()
@@ -28,7 +28,17 @@ object AppModule {
                     .writeTimeout(30, TimeUnit.SECONDS)
                     .addInterceptor(HttpLoggingInterceptor().apply {
                         level = HttpLoggingInterceptor.Level.BODY
-                    }).build()
+                    })
+                    .addInterceptor { chain ->
+                        val request = chain.request().newBuilder()
+                            .addHeader(
+                                "Authorization",
+                                "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NTFiY2M3MTEwZmY3NGZlMTZlNTE3NmU0NWZiZTE4MiIsIm5iZiI6MTczNzUxODE2Ni43OTksInN1YiI6IjY3OTA2YzU2ZmMyNTE5YjQzZjc3NDMyMSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.B3qPp3Z0PfvzzP9LX3wU--0kPQ7skoM_Ra9Nc55XeHE"
+                            )
+                            .build()
+                        chain.proceed(request)
+                    }
+                    .build()
             )
             .build()
             .create(ApiService::class.java)

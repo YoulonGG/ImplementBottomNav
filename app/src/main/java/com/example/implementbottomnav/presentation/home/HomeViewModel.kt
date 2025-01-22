@@ -31,8 +31,8 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private val _nowPlayingData = MutableStateFlow<List<Result>>(mutableListOf())
-    val nowPlayingData: StateFlow<List<Result>> =
+    private val _nowPlayingData = MutableStateFlow<List<Result?>>(mutableListOf())
+    val nowPlayingData: StateFlow<List<Result?>> =
         _nowPlayingData.onStart {
             getNowPlayingMovie()
         }.stateIn(
@@ -42,21 +42,19 @@ class HomeViewModel @Inject constructor(
         )
 
     private fun getNowPlayingMovie() {
-        nowPlayingUseCase.invoke().flowOn(Dispatchers.IO).onEach {
-            when (it) {
+        nowPlayingUseCase.invoke().flowOn(Dispatchers.IO).onEach { result ->
+            when (result) {
                 is ApiResult.Error -> {
-                    setState { copy(isError = true) }
+                    setState { copy(isError = true, isLoading = false) }
                 }
 
                 is ApiResult.Success -> {
-                    it.data?.results.let { data ->
-                        _nowPlayingData.update { it }
-                    }
+                    _nowPlayingData.update { result.data?.results ?: emptyList() }
                     setState { copy(isError = false, isLoading = false) }
                 }
 
                 is ApiResult.Loading -> {
-                    setState { copy(isLoading = true) }
+                    setState { copy(isLoading = true, isError = false) }
                 }
             }
         }.launchIn(viewModelScope)
