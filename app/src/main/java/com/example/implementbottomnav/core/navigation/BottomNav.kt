@@ -1,4 +1,4 @@
-package com.example.implementbottomnav
+package com.example.implementbottomnav.core.navigation
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +19,13 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.implementbottomnav.R
 
 @Composable
 fun BottomNav(
     navController: NavController
 ) {
-    val nav = listOf(BottomItem.HOME, BottomItem.SEARCH, BottomItem.SAVED, BottomItem.ACCOUNT)
+    val nav = listOf(BottomItem.HOME, BottomItem.FAVORITE)
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
@@ -71,19 +72,25 @@ fun BottomNav(
 
 
 sealed class BottomItem(val route: String, val icon: Int, val name: String) {
+
     data object HOME : BottomItem(
-        route = "home", icon = R.drawable.baseline_home_24, name = "Home"
+        route = "home", icon = R.drawable.home, name = "Home"
     )
 
-    data object SEARCH : BottomItem(
-        route = "search", icon = R.drawable.baseline_search_24, name = "Search"
+    data object FAVORITE : BottomItem(
+        route = "favorite", icon = R.drawable.heart, name = "Favorite"
     )
 
-    data object SAVED : BottomItem(
-        route = "saved", icon = R.drawable.baseline_bookmark_24, name = "Saved"
-    )
 
-    data object ACCOUNT : BottomItem(
-        route = "account", icon = R.drawable.baseline_person_24, name = "Account"
-    )
+//    data object SEARCH : BottomItem(
+//        route = "search", icon = R.drawable.baseline_search_24, name = "Search"
+//    )
+//
+//    data object SAVED : BottomItem(
+//        route = "saved", icon = R.drawable.baseline_bookmark_24, name = "Saved"
+//    )
+//
+//    data object ACCOUNT : BottomItem(
+//        route = "account", icon = R.drawable.baseline_person_24, name = "Account"
+//    )
 }

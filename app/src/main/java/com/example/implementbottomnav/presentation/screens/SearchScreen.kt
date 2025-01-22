@@ -1,4 +1,4 @@
-package com.example.implementbottomnav.screens
+package com.example.implementbottomnav.presentation.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -10,11 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun AccountScreen() {
+fun SearchScreen() {
     Box(
         contentAlignment = Alignment.Center,
         content = {
-            Text("Account Screen")
+            Text("Search Screen")
         },
         modifier = Modifier
             .fillMaxSize()
