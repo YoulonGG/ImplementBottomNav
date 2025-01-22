@@ -1,11 +1,21 @@
 package com.example.implementbottomnav.presentation.home.component
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
@@ -15,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -39,6 +50,8 @@ fun MovieCard(
 ) {
     var isExpanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
+
+
     ElevatedCard(
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFd6ccc2),
@@ -86,15 +99,19 @@ fun MovieCard(
                 value = detail.releaseDate ?: ""
             )
             Spacer(modifier = Modifier.height(5.dp))
-            if (isExpanded) {
+            AnimatedVisibility(isExpanded) {
                 Text(
                     text = detail.overview ?: "",
                     maxLines = 10,
                     fontSize = 10.sp,
                     lineHeight = 12.sp,
-                    color = Color.Black
+                    color = Color.Black,
+                    modifier = Modifier
                 )
             }
+//            if (isExpanded) {
+//
+//            }
         }
     }
 }
